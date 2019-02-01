@@ -9,6 +9,10 @@ ProjectSection(SolutionItems) = preProject
 	spec01.pdf = spec01.pdf
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tor", "Tor\Tor.csproj", "{E5351ED0-D5C4-42EF-A353-DC0A6501DA67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ledger", "Ledger\Ledger.csproj", "{615BB33A-3FA0-4328-977F-505715FD7675}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +23,13 @@ Global
 		{DB0A26D4-29E8-4D13-9AE7-42F2E7F5591B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB0A26D4-29E8-4D13-9AE7-42F2E7F5591B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB0A26D4-29E8-4D13-9AE7-42F2E7F5591B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5351ED0-D5C4-42EF-A353-DC0A6501DA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5351ED0-D5C4-42EF-A353-DC0A6501DA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5351ED0-D5C4-42EF-A353-DC0A6501DA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5351ED0-D5C4-42EF-A353-DC0A6501DA67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615BB33A-3FA0-4328-977F-505715FD7675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615BB33A-3FA0-4328-977F-505715FD7675}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615BB33A-3FA0-4328-977F-505715FD7675}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615BB33A-3FA0-4328-977F-505715FD7675}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

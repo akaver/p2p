@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ledger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Tor;
 
 namespace WebApp
 {
@@ -26,6 +28,9 @@ namespace WebApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseTor("/tor");
+            app.UseLedger("/ledger");
+            
             app.Run(async (context) => { await context.Response.WriteAsync("Hello World!"); });
         }
     }
