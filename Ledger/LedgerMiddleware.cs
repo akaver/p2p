@@ -17,16 +17,25 @@ namespace Ledger
 
         public async Task InvokeAsync(HttpContext context)
         {
-            
-            Console.WriteLine($"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes)");
+            Console.WriteLine(
+                $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
 
-            await context.Response.WriteAsync("------- Before ------ \n\r");
+            if (context.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
+            {
+                await context.Response.WriteAsync("------- Before Ledger ------\n");
+            }
+
 
             // Call the next delegate/middleware in the pipeline
-            await _next(context);
-            
-            await context.Response.WriteAsync("\n\r------- After ------");
-            
+            if (_next != null)
+            {
+                await _next(context);
+            }
+
+            if (context.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
+            {
+                await context.Response.WriteAsync("------- After Ledger ------");
+            }
         }
     }
 }

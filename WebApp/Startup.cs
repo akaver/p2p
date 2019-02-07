@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Scheduler;
 using Tor;
 
 namespace WebApp
@@ -17,7 +18,13 @@ namespace WebApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            // Add scheduled tasks & scheduler
+            services.AddSingleton<IScheduledTask, Ledger.ScheduledTask>();
+            services.AddScheduler((sender, args) =>
+            {
+                Console.Write(args.Exception.Message);
+                args.SetObserved();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,8 +37,10 @@ namespace WebApp
 
             app.UseTor("/tor");
             app.UseLedger("/ledger");
+
+            app.Run((context) => Task.CompletedTask);
             
-            app.Run(async (context) => { await context.Response.WriteAsync("Hello World!"); });
+            //app.Run(async (context) => { await context.Response.WriteAsync("OK"); });
         }
     }
 }
