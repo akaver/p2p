@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ledger", "Ledger\Ledger.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler", "Scheduler\Scheduler.csproj", "{3F5CE72A-1A6E-4FA4-8D74-CD086708A550}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{CC564E63-0E9D-4820-8FE8-58A912616382}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{324AD93E-DECD-4698-97E9-6099138F9777}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,5 +41,13 @@ Global
 		{3F5CE72A-1A6E-4FA4-8D74-CD086708A550}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5CE72A-1A6E-4FA4-8D74-CD086708A550}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F5CE72A-1A6E-4FA4-8D74-CD086708A550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC564E63-0E9D-4820-8FE8-58A912616382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC564E63-0E9D-4820-8FE8-58A912616382}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC564E63-0E9D-4820-8FE8-58A912616382}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC564E63-0E9D-4820-8FE8-58A912616382}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324AD93E-DECD-4698-97E9-6099138F9777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324AD93E-DECD-4698-97E9-6099138F9777}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324AD93E-DECD-4698-97E9-6099138F9777}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324AD93E-DECD-4698-97E9-6099138F9777}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

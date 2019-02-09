@@ -1,0 +1,12 @@
+[
+  {
+    "addr": "127.0.0.1",
+    "port": 5001,
+    "lastSeenDT": null
+  },
+  {
+    "addr": "127.0.0.1",
+    "port": 5002,
+    "lastSeenDT": null
+  }
+]
