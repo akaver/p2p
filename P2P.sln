@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{324AD93E-DECD-4698-97E9-6099138F9777}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,5 +51,9 @@ Global
 		{324AD93E-DECD-4698-97E9-6099138F9777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{324AD93E-DECD-4698-97E9-6099138F9777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{324AD93E-DECD-4698-97E9-6099138F9777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

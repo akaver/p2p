@@ -14,6 +14,7 @@
       <ProjectReference Include="..\DAL\DAL.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Ledger\Ledger.csproj" />
+      <ProjectReference Include="..\Logger\Logger.csproj" />
       <ProjectReference Include="..\Tor\Tor.csproj" />
     </ItemGroup>
 

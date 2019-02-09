@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DAL;
+using Ledger.Requests;
+using Logger;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Ledger
 {
@@ -15,16 +21,38 @@ namespace Ledger
             _endpointPath = path;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, AppDbContext dbContext, IAppLogger appLogger)
         {
+            var response = "";
+
             Console.WriteLine(
                 $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
 
-            if (context.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
+            await appLogger.DebugAsync("request",
+                $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
+
+
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/addr", StringComparison.Ordinal))
             {
-                await context.Response.WriteAsync("------- Before Ledger ------\n");
+                response = await RequestAddr.Response(dbContext);
             }
 
+
+            // this has to be final for logging to work correctly
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/log", StringComparison.Ordinal))
+            {
+                response = await RequestLog.Response(dbContext);
+            }
+            else if (!string.IsNullOrWhiteSpace(response))
+            {
+                await appLogger.DebugAsync($"response - {context.Request.Path}", response);
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(response))
+            {
+                await context.Response.WriteAsync(response);
+            }
 
             // Call the next delegate/middleware in the pipeline
             if (_next != null)
@@ -32,10 +60,12 @@ namespace Ledger
                 await _next(context);
             }
 
-            if (context.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
+            /*
+            if (context.Request.Path.StartsWithSegments(_endpointPath, StringComparison.Ordinal))
             {
                 await context.Response.WriteAsync("------- After Ledger ------");
             }
+            */
         }
     }
 }
