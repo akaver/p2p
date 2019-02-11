@@ -29,7 +29,7 @@ namespace WebApp
 
             if (args.Length > 1)
             {
-                if (!File.Exists(args[1]))
+                if (File.Exists(args[1]))
                 {
                     InitialKnownHosts = args[1];
                 }

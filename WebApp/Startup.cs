@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Scheduler;
 using Tor;
 using WebApp.Helpers;
@@ -23,6 +24,14 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("p2p"));
+            services.AddScoped<Logger.IAppLogger, Logger.AppLogger>();
+
+            services.Configure<LedgerOptions>(options =>
+            {
+                options.Addr = "127.0.0.1";
+                options.Port = Program.PortToListen;
+                options.Path = "/ledger";
+            });
             
             // Add scheduled tasks & scheduler
             services.AddSingleton<IScheduledTask, Ledger.ScheduledTask>();
@@ -32,8 +41,8 @@ namespace WebApp
                 args.SetObserved();
             });
 
-            services.AddScoped<Logger.IAppLogger, Logger.AppLogger>();
-            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +57,10 @@ namespace WebApp
                 {
                     var provider = scope.ServiceProvider;
                     var log = provider.GetRequiredService<Logger.IAppLogger>();
+                    var options = provider.GetRequiredService<IOptions<LedgerOptions>>().Value;
                     using (var dbContext = provider.GetRequiredService<AppDbContext>())
                     {
-                        LoadInitialHosts.LoadInitialHostsFromJsonFile(dbContext, log, Program.InitialKnownHosts);                  
+                        LoadInitialHosts.LoadInitialHostsFromJsonFile(dbContext, log, Program.InitialKnownHosts, options);                  
                     }
                 }
             }
@@ -59,6 +69,7 @@ namespace WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            
 
             app.UseTor("/tor");
             app.UseLedger("/ledger");

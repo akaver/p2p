@@ -34,7 +34,7 @@ namespace Ledger
 
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/addr", StringComparison.Ordinal))
             {
-                response = await RequestAddr.Response(dbContext);
+                response = await RequestAddr.Response(dbContext, context);
             }
 
 

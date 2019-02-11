@@ -9,6 +9,8 @@ namespace DAL
 
         public DbSet<Host> Hosts { get; set; }
         public DbSet<LogEntry> LogEntries { get; set; }
+        
+        
 
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
