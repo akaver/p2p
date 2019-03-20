@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -13,11 +14,6 @@
       <ProjectReference Include="..\Logger\Logger.csproj" />
       <ProjectReference Include="..\Scheduler\Scheduler.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-      </Reference>
-    </ItemGroup>
+    
 
 </Project>

@@ -30,24 +30,46 @@ namespace Ledger
         {
             var response = "";
 
-            Console.WriteLine(
-                $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
+            
+            // log only this endpoint traffic
+            if (context.Request.Path.StartsWithSegments(_endpointPath, StringComparison.Ordinal))
+            {
+                Console.WriteLine(
+                    $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
 
-            await appLogger.DebugAsync("request",
-                $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
+                await appLogger.DebugAsync("request",
+                    $"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes). Client ip: {context.Connection.RemoteIpAddress}");
+            }
 
-
+            
+            // p2p responses - who do we know already
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/addr", StringComparison.Ordinal))
             {
                 response = await RequestAddr.Response(dbContext, context);
             }
 
+            // p2p responses - ping
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/ping", StringComparison.Ordinal))
             {
                 response = await RequestPing.Response(dbContext, context);
             }
 
+            
+            // ledger - get blocks from start to end 
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/blocks", StringComparison.Ordinal))
+            {
+                response = await RequestBlocks.Response(dbContext, context);
+            }
 
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/singleblock", StringComparison.Ordinal))
+            {
+                response = await RequestSingleBlock.Response(dbContext, context);
+            }
+
+            
+            // ledger - get one specific block
+            
+            
             // this has to be final for logging to work correctly
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/log", StringComparison.Ordinal))
             {
@@ -57,8 +79,8 @@ namespace Ledger
             {
                 await appLogger.DebugAsync($"response - {context.Request.Path}", response);
             }
-
-
+          
+            
             if (!string.IsNullOrWhiteSpace(response))
             {
                 await context.Response.WriteAsync(response);

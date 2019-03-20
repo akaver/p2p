@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Domain
 {
@@ -14,6 +15,7 @@ namespace Domain
 
         [Required]
         public string ParentBlockId { get; set; } // hash of parent
+        [JsonIgnore]
         public Block ParentBlock { get; set; }
         
         /*
