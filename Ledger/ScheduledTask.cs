@@ -46,13 +46,12 @@ namespace Ledger
                 using (var dbContext = provider.GetRequiredService<AppDbContext>())
                 {
                     Console.WriteLine("Generating new block");
-
                     await BlockHelper.GenerateNewBlockAsync(dbContext, log, options);
                     
                     
                     var tasks = new List<Task<HttpResponseMessage>>();
                     // do not ask from yourself
-                    foreach (var host in dbContext.Hosts.Where(h => !(h.Addr == options.Addr && h.Port == options.Port)))
+                    foreach (var host in dbContext.Hosts.Where(h => h.Addr != options.Addr && h.Port != options.Port))
                     {
                         var url = $"http://{host.Addr}:{host.Port}/ledger/addr?addr={options.Addr}&port={options.Port}";
                         Console.WriteLine($"Requesting from {url}");
@@ -68,8 +67,6 @@ namespace Ledger
                         {
                             continue;
                         }
-
-                        
                         
                             
                         var requestHost = await dbContext.Hosts.SingleAsync(h =>
