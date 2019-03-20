@@ -14,7 +14,7 @@ namespace WebApp
     public class Program
     {
         public static int PortToListen = 5000;
-        public static string InitialKnownHosts = "/Users/akaver/Magister/VR2/P2P/Data/5000.json";
+        public static string InitialKnownHosts = "../Data/5000.json";
         public static string PublicKey = Guid.NewGuid().ToString();
         public static string PrivateKey = Guid.NewGuid().ToString();
 
@@ -35,6 +35,10 @@ namespace WebApp
                 if (File.Exists(args[1]))
                 {
                     InitialKnownHosts = args[1];
+                }
+                else
+                {
+                    Console.WriteLine("No data file found!!!");
                 }
             }
 
