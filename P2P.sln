@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crypto", "Crypto\Crypto.csproj", "{6FC30C30-DB87-4D41-9249-BD269617D4B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,5 +57,9 @@ Global
 		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB42A48D-E99C-4488-A39F-D0DBAD42F5E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC30C30-DB87-4D41-9249-BD269617D4B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC30C30-DB87-4D41-9249-BD269617D4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC30C30-DB87-4D41-9249-BD269617D4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC30C30-DB87-4D41-9249-BD269617D4B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

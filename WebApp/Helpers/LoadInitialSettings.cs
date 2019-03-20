@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Crypto;
+using Crypto.Entities;
 using DAL;
 using Domain;
 using Ledger;
@@ -37,8 +39,19 @@ namespace WebApp.Helpers
                 
                 var settings = (HostSettings) serializer.Deserialize(file, typeof(HostSettings));
 
-                Program.PublicKey = settings.PublicKey;
-                Program.PrivateKey = settings.PrivateKey;
+                var areKeysGenerated = !string.IsNullOrEmpty(settings.PublicKey) &&
+                                       !string.IsNullOrEmpty(settings.PrivateKey);
+            
+                var keyPair = KeyGenerator.GetPrivatePublicKeyPair();
+               
+
+                Program.PublicKey = KeyGenerator.IsValidPublicKey(settings.PublicKey)
+                    ? settings.PublicKey
+                    : keyPair.PublicKey;
+                
+                Program.PrivateKey = KeyGenerator.IsValidPrivateKey(settings.PrivateKey)
+                    ? settings.PrivateKey
+                    : keyPair.PrivateKey;
                 
                 foreach (var host in settings.Hosts)
                 {

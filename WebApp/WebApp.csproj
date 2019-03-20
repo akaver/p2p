@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Crypto\Crypto.csproj" />
       <ProjectReference Include="..\DAL\DAL.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Ledger\Ledger.csproj" />
