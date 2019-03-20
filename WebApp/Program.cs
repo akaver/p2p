@@ -37,7 +37,14 @@ namespace WebApp
                 }
                 else
                 {
-                    Console.WriteLine("No data file found!!!");
+                    Console.WriteLine("No data file found!!! From: " + InitialKnownHosts);
+                }
+            }
+            else
+            {
+                if (!File.Exists(InitialKnownHosts))
+                {
+                    Console.WriteLine("No data file found!!! From: " + InitialKnownHosts);
                 }
             }
 

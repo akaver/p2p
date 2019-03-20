@@ -31,6 +31,8 @@ namespace WebApp
                 options.Addr = "127.0.0.1";
                 options.Port = Program.PortToListen;
                 options.Path = "/ledger";
+                options.PublicKey = Program.PublicKey;
+                options.PrivateKey = Program.PrivateKey;
             });
             
             // Add scheduled tasks & scheduler

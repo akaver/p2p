@@ -13,10 +13,15 @@ namespace Domain
         public string BlockId { get; set; } // hash fom everything except child block id and LocalCreatedAt
         public DateTime LocalCreatedAt { get; set; } // local timestamp, when this record was created
 
-        [Required]
         public string ParentBlockId { get; set; } // hash of parent
         [JsonIgnore]
         public Block ParentBlock { get; set; }
+
+        [JsonIgnore]
+        public string ChildBlockId { get; set; } // hash of parent
+        [JsonIgnore]
+        public Block ChildBlock { get; set; }
+
         
         /*
         public string ChildBlockId { get; set; } // hash of child - for easier navigation. maybe not needed. requires configuration in EF and double updates

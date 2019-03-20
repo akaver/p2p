@@ -62,6 +62,7 @@ namespace WebApp.Helpers
             
             var genesisBlock = new Block();
             genesisBlock.ParentBlockId = null;
+            genesisBlock.ChildBlockId = null;
 
             // payload
             genesisBlock.CreatedAt = DateTime.Now;
