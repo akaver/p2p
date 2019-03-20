@@ -66,6 +66,11 @@ namespace Ledger
                 response = await RequestSingleBlock.Response(dbContext, context);
             }
 
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/createblock", StringComparison.Ordinal) ) //  && context.Request.Method == "POST"
+            {
+                response = await RequestCreateBlock.Response(dbContext, context, _publicKey, _privateKey);
+            }
+
             
             // ledger - get one specific block
             

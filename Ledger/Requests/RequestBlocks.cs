@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Ledger.Requests
 {
-    public class RequestBlocks
+    public static class RequestBlocks
     {
         public static async Task<string> Response(AppDbContext dbContext, HttpContext context)
         {
@@ -56,10 +56,7 @@ namespace Ledger.Requests
                 } while (block?.ParentBlockId != null);
             }
 
-
             var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
-
-
             return JsonConvert.SerializeObject(responseBlocks, settings);
             
         }
