@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Crypto;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebApp.Helpers;
-
 
 namespace WebApp
 {
@@ -53,6 +48,19 @@ namespace WebApp
 
                     var settings = (HostSettings) serializer.Deserialize(file, typeof(HostSettings));
 
+                    var areKeysGenerated = !string.IsNullOrEmpty(settings.PublicKey) &&
+                                           !string.IsNullOrEmpty(settings.PrivateKey);
+
+                    if (!areKeysGenerated)
+                    {
+                        var keyPair = KeyGenerator.GetPrivatePublicKeyPair();
+                        settings.PublicKey = keyPair.PublicKey;
+                        settings.PrivateKey = keyPair.PrivateKey;
+
+                        var newSettingsJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
+                        File.WriteAllText(InitialKnownHosts, newSettingsJson);
+                    }
+                    
                     PublicKey = settings.PublicKey;
                     PrivateKey = settings.PrivateKey;
                 }

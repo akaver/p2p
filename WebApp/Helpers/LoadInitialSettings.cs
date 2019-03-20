@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using Crypto;
-using Crypto.Entities;
 using DAL;
 using Domain;
 using Ledger;
@@ -14,7 +11,7 @@ namespace WebApp.Helpers
 {
     public static class LoadInitialSettings
     {
-        public static async void LoadInitialSettingsFromJsonFile(AppDbContext ctx, Logger.IAppLogger log,
+        public static async void LoadInitialSettingsFromJsonFile(AppDbContext ctx, IAppLogger log,
             string jsonDataFile, LedgerOptions options)
         {
             // validate inputs
@@ -39,21 +36,6 @@ namespace WebApp.Helpers
                 
                 var settings = (HostSettings) serializer.Deserialize(file, typeof(HostSettings));
 
-                var areKeysGenerated = !string.IsNullOrEmpty(settings.PublicKey) &&
-                                       !string.IsNullOrEmpty(settings.PrivateKey);
-
-                if (areKeysGenerated)
-                {
-                    Program.PublicKey = settings.PublicKey;
-                    Program.PrivateKey = settings.PrivateKey;
-                }
-                else
-                {
-                    var keyPair = KeyGenerator.GetPrivatePublicKeyPair();
-                    Program.PublicKey = keyPair.PublicKey;
-                    Program.PrivateKey = keyPair.PrivateKey;
-                }
-               
                 foreach (var host in settings.Hosts)
                 {
                     await ctx.Hosts.AddAsync(host);
