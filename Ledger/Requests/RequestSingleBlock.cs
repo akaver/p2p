@@ -19,7 +19,8 @@ namespace Ledger.Requests
 
                 var block = await dbContext.Blocks.FirstOrDefaultAsync(b => b.BlockId == hash);
 
-                return JsonConvert.SerializeObject(block);
+                var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
+                return JsonConvert.SerializeObject(block,settings);
             }
 
             return await Task.FromResult("null");

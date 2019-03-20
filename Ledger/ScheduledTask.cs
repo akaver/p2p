@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DAL;
 using Domain;
+using Ledger.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -19,11 +20,11 @@ namespace Ledger
     {
         private readonly IServiceProvider _serviceProvider;
         public TimeSpan TimeBetweenExecutions => TimeSpan.FromMinutes(1);
-        private static HttpClient _httpClient = new HttpClient();
+        private static readonly HttpClient HttpClient = new HttpClient();
 
         public ScheduledTask(IServiceProvider serviceProvider)
         {
-            _httpClient.Timeout = TimeSpan.FromSeconds(20);
+            HttpClient.Timeout = TimeSpan.FromSeconds(20);
             _serviceProvider = serviceProvider;
         }
 
@@ -34,6 +35,7 @@ namespace Ledger
             
             Console.WriteLine("Scheduled task run at " + DateTime.Now);
 
+
             using (var scope = _serviceProvider.CreateScope())
             {
                 var provider = scope.ServiceProvider;
@@ -43,18 +45,21 @@ namespace Ledger
                 
                 using (var dbContext = provider.GetRequiredService<AppDbContext>())
                 {
+                    Console.WriteLine("Generating new block");
+                    await BlockHelper.GenerateNewBlockAsync(dbContext, log, options);
+                    
+                    
                     var tasks = new List<Task<HttpResponseMessage>>();
                     // do not ask from yourself
-                    foreach (var host in dbContext.Hosts.Where(h => !(h.Addr == options.Addr && h.Port == options.Port)))
+                    foreach (var host in dbContext.Hosts.Where(h => h.Addr != options.Addr && h.Port != options.Port))
                     {
                         var url = $"http://{host.Addr}:{host.Port}/ledger/addr?addr={options.Addr}&port={options.Port}";
                         Console.WriteLine($"Requesting from {url}");
-                        tasks.Add(_httpClient.GetAsync(url));   
+                        tasks.Add(HttpClient.GetAsync(url));   
                     }
 
                     // wait for all tasks to complete
                     await Task.WhenAll(tasks);
-
 
                     foreach (var task in tasks)
                     {
@@ -62,8 +67,6 @@ namespace Ledger
                         {
                             continue;
                         }
-
-                        
                         
                             
                         var requestHost = await dbContext.Hosts.SingleAsync(h =>
@@ -99,6 +102,7 @@ namespace Ledger
             }
 
             stopWatch.Stop();
+            Console.WriteLine();
             Console.WriteLine("Scheduled task took " + stopWatch.Elapsed);
 
 

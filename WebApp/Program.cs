@@ -7,6 +7,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using WebApp.Helpers;
 
 
 namespace WebApp
@@ -38,10 +40,24 @@ namespace WebApp
                 }
                 else
                 {
-                    Console.WriteLine("No data file found!!!");
+                    Console.WriteLine("No data file found!!! From: " + InitialKnownHosts);
                 }
             }
 
+            // try to load private/public keys
+            if (File.Exists(InitialKnownHosts))
+            {
+                using (var file = File.OpenText(InitialKnownHosts))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+
+                    var settings = (HostSettings) serializer.Deserialize(file, typeof(HostSettings));
+
+                    PublicKey = settings.PublicKey;
+                    PrivateKey = settings.PrivateKey;
+                }
+            }
+            
             CreateWebHostBuilder(args).Build().Run();
         }
 
