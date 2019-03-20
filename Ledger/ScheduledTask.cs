@@ -21,6 +21,7 @@ namespace Ledger
         private readonly IServiceProvider _serviceProvider;
         public TimeSpan TimeBetweenExecutions => TimeSpan.FromMinutes(1);
         private static readonly HttpClient HttpClient = new HttpClient();
+        private static DateTime LastRunTime = DateTime.Now;
 
         public ScheduledTask(IServiceProvider serviceProvider)
         {

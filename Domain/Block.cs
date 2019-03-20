@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Crypto;
@@ -9,32 +11,32 @@ namespace Domain
 {
     public class Block
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string BlockId { get; set; } // hash fom everything except child block id and LocalCreatedAt
         public DateTime LocalCreatedAt { get; set; } // local timestamp, when this record was created
 
         public string ParentBlockId { get; set; } // hash of parent
-        [JsonIgnore] public Block ParentBlock { get; set; }
+        
+        [JsonIgnore]
+        public Block ParentBlock { get; set; }
 
-        [JsonIgnore] public string ChildBlockId { get; set; } // hash of parent
-        [JsonIgnore] public Block ChildBlock { get; set; }
+        // hash of parent
 
-
-        /*
-        public string ChildBlockId { get; set; } // hash of child - for easier navigation. maybe not needed. requires configuration in EF and double updates
+        [JsonIgnore]
+        public string ChildBlockId { get; set; } 
+        
+        [JsonIgnore]
         public Block ChildBlock { get; set; }
-        */
+
 
         #region payload
 
         public DateTime CreatedAt { get; set; }
         public string Originator { get; set; }
 
-        public string
-            Content
-        {
-            get;
-            set;
-        } // bunch of meta-data can be extracted from here into separate fields - app id, contract id, ...
+        // bunch of meta-data can be extracted from here into separate fields - app id, contract id, ...
+        public string Content {get; set;} 
 
         #endregion
 
@@ -45,8 +47,9 @@ namespace Domain
 
         #endregion
 
-
-        public string GetPayload => CreatedAt.ToLongDateString() + Originator + Content;
+        public string GetPayload => 
+            CreatedAt.ToLongDateString() +
+            Originator + Content;
 
         public string GetContentForBlockHashing =>
             ParentBlockId +

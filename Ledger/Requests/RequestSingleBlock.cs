@@ -23,6 +23,18 @@ namespace Ledger.Requests
                 return JsonConvert.SerializeObject(block,settings);
             }
 
+            if (context.Request.Query.ContainsKey("payloadhash"))
+            {
+                var payloadhash = context.Request.Query["payloadhash"];
+
+                var block = await dbContext.Blocks.FirstOrDefaultAsync(b => b.Signature == payloadhash);
+
+                var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
+                return JsonConvert.SerializeObject(block,settings);
+            }
+
+            
+
             return await Task.FromResult("null");
         }
         
