@@ -33,12 +33,9 @@ namespace WebApp.Helpers
 
             using (var file = File.OpenText(jsonDataFile))
             {
-                JsonSerializer serializer = new JsonSerializer();
+                var serializer = new JsonSerializer();
                 
                 var settings = (HostSettings) serializer.Deserialize(file, typeof(HostSettings));
-
-                Program.PublicKey = settings.PublicKey;
-                Program.PrivateKey = settings.PrivateKey;
                 
                 foreach (var host in settings.Hosts)
                 {
@@ -66,7 +63,7 @@ namespace WebApp.Helpers
 
             // payload
             genesisBlock.CreatedAt = DateTime.Now;
-            genesisBlock.Originator = Program.PublicKey;
+            genesisBlock.Originator = options.PublicKey;
             genesisBlock.Content = "GENESIS BLOCK";
 
             // payload signature

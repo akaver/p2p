@@ -25,8 +25,19 @@ namespace Ledger.Requests
             }
 
             var responseBlocks = new List<Block>();
+
+            Block block = null;
+            if (fromHash == null)
+            {
+                // get the first block
+                block =  await dbContext.Blocks.FirstOrDefaultAsync(b => b.ParentBlockId == null);
+            }
+            else
+            {
+                // start from the correct block
+                block =  await dbContext.Blocks.FirstOrDefaultAsync(b => b.BlockId == fromHash);
+            }
             
-            var block =  await dbContext.Blocks.FirstOrDefaultAsync(b => b.ParentBlockId == null);
 
             if (block != null)
             {
@@ -39,11 +50,17 @@ namespace Ledger.Requests
                     {
                         responseBlocks.Add(block);
                     }
+
+                    if (toHash!=null && block != null && block.BlockId == toHash) break;
+                    
                 } while (block?.ParentBlockId != null);
             }
 
 
-            return JsonConvert.SerializeObject(responseBlocks);
+            var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
+
+
+            return JsonConvert.SerializeObject(responseBlocks, settings);
             
         }
     }
