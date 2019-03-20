@@ -1,7 +1,7 @@
 # Distributed Network Applications II
 ## TalTech magister course ITV0120/ITI0215
 
-### Andres Käver
+### Andres Käver & Anu Kuusmaa
 
 
 Implementation of simple distributed ledger (or/and tor) as ASP.NET Core middleware.
