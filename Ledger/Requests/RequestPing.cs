@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 namespace Ledger.Requests
 {
-    public class RequestPing
+    public static class RequestPing
     {
         public static async Task<string> Response(AppDbContext dbContext, HttpContext context)
         {
-            return "OK";
+            return await Task.FromResult("OK");
         }
 
     }

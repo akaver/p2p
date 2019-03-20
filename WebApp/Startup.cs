@@ -72,7 +72,7 @@ namespace WebApp
             
 
             app.UseTor("/tor");
-            app.UseLedger("/ledger");
+            app.UseLedger("/ledger", Program.PublicKey, Program.PrivateKey);
 
             app.Run((context) => Task.CompletedTask);
             

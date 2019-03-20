@@ -14,11 +14,16 @@ namespace Ledger
     {
         private readonly RequestDelegate _next;
         private readonly string _endpointPath;
+        private readonly string _publicKey;
+        private readonly string _privateKey;
+        
 
-        public LedgerMiddleware(RequestDelegate next, string path)
+        public LedgerMiddleware(RequestDelegate next, string path, string publicKey, string privateKey)
         {
             _next = next;
             _endpointPath = path;
+            _publicKey = publicKey;
+            _privateKey = privateKey;
         }
 
         public async Task InvokeAsync(HttpContext context, AppDbContext dbContext, IAppLogger appLogger)

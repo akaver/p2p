@@ -62,12 +62,26 @@ namespace WebApp.Helpers
             
             var genesisBlock = new Block();
             genesisBlock.ParentBlockId = null;
-            genesisBlock.Content = "GENESIS";
+
+            // payload
             genesisBlock.CreatedAt = DateTime.Now;
-            genesisBlock.LocalCreatedAt = genesisBlock.CreatedAt;
             genesisBlock.Originator = Program.PublicKey;
+            genesisBlock.Content = "GENESIS BLOCK";
+
+            // payload signature
+            genesisBlock.Signature = genesisBlock.GetPayloadSignature(Program.PublicKey);
+
+            genesisBlock.LocalCreatedAt = genesisBlock.CreatedAt;
             genesisBlock.BlockId = genesisBlock.GetHash();
 
+
+            await ctx.Blocks.AddAsync(genesisBlock);
+            await ctx.SaveChangesAsync();
+
+            await log.InfoAsync(
+                "startup - created GENESIS block",
+                JsonConvert.SerializeObject(await ctx.Blocks.FirstOrDefaultAsync(), Formatting.None)
+            );
 
         }
     }
