@@ -34,7 +34,7 @@ namespace Ledger.Requests
             childBlock.Content = content;
 
             // payload signature
-            childBlock.Signature = childBlock.GetPayloadSignature(publicKey);
+            childBlock.Signature = childBlock.GetPayloadSignature(privateKey);
 
             childBlock.LocalCreatedAt = childBlock.CreatedAt;
             childBlock.BlockId = childBlock.GetHash();

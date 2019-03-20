@@ -26,7 +26,7 @@ namespace Ledger.Helpers
             childBlock.Content = "CHILD BLOCK " + Guid.NewGuid().ToString();
 
             // payload signature
-            childBlock.Signature = childBlock.GetPayloadSignature(options.PublicKey);
+            childBlock.Signature = childBlock.GetPayloadSignature(options.PrivateKey);
 
             childBlock.LocalCreatedAt = childBlock.CreatedAt;
             childBlock.BlockId = childBlock.GetHash();

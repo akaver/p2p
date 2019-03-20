@@ -60,12 +60,7 @@ namespace Domain
     {
         public static string GetPayloadSignature(this Block block, string signatureKey)
         {
-            var inputString =
-                block.CreatedAt.ToLongDateString() +
-                block.Originator +
-                block.Content;
-            
-            var inputBytes = Encoding.UTF8.GetBytes(inputString);
+            var inputBytes = Encoding.UTF8.GetBytes(block.GetPayload);
             
             return SignatureProvider.GetSignature(inputBytes, signatureKey);
         }
@@ -73,7 +68,7 @@ namespace Domain
 
         public static string GetHash(this Block block)
         {
-            var bytesToHash = System.Text.Encoding.UTF8.GetBytes(block.GetContentForBlockHashing);
+            var bytesToHash = Encoding.UTF8.GetBytes(block.GetContentForBlockHashing);
             var hasher = SHA256.Create();
             var hashBytes = hasher.ComputeHash(bytesToHash);
 
