@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL;
 using Domain;
@@ -24,6 +25,18 @@ namespace Ledger.Requests
                 toHash = context.Request.Query["to"];
             }
 
+            if (context.Request.Query.ContainsKey("all"))
+            {
+                if (context.Request.Query["all"] == "true")
+                {
+                    var res = await dbContext.Blocks.OrderBy(b => b.LocalCreatedAt).ToListAsync();
+                    var res2 = res.Select(a => new {block = a, child = a.ChildBlockId});
+                    return JsonConvert.SerializeObject(res2, new JsonSerializerSettings {Formatting = Formatting.Indented});
+                }
+            }
+            
+            
+            
             var responseBlocks = new List<Block>();
 
             Block block = null;

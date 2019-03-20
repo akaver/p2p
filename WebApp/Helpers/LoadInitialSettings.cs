@@ -77,7 +77,7 @@ namespace WebApp.Helpers
 
             await log.InfoAsync(
                 "startup - created GENESIS block",
-                JsonConvert.SerializeObject(await ctx.Blocks.FirstOrDefaultAsync(), Formatting.None)
+                JsonConvert.SerializeObject(await ctx.Blocks.FirstAsync(), Formatting.None)
             );
 
         }

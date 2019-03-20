@@ -1,16 +1,18 @@
 {
-  "publicKey": "secret5005",
-  "privateKey": "",
-  "hosts": [
+  "PublicKey": "{\"Exponent\":\"AQAB\",\"Modulus\":\"qk0Y7mcaqmyAtVE3PPEB74tK/ARTwhZUwOAJi09V8nPXPT+9KZYwSpJxKRXWUpxoYxHq0T72wPvWov+ZFtWOsVQFR/PMYlPJLy+SrZJxFnmegI4oFt/IipdoLXIy27hbMbAZVXnmAHqWkALhb/tEsRcNXkII2h0QecmNvZFAGtE=\"}",
+  "PrivateKey": "{\"D\":\"odEgH2dYrxbqNV82XXGjpTl1xoFWFNWjMqGub/Cyee4YVtp5o0pSGImNfLyDKXv0tC4SMUDitfyVtcuoa0oAinB/U3Dk7QOg1MDU1rSLiMH2mXPBlCyqonE0WYLZIN9iRQqJNxz1V9VJS4G/425aXV6gLva8KV3J2akMa7JMzAE=\",\"DP\":\"GoPNU5YZYL7yIoVF4gHmAD9DoyGgGgZ/tGGJKOQPr7cElGTUuEUEsrgVAm1d9nfDGT9FxUMwQPQb5Q0MVCb6YQ==\",\"DQ\":\"utafhx2RBt9/1Ay89auq/7sm+BjL5mhcQVrVwAKY2BvwwUA5N9fe0NCIjsnAJ4xou19EMUxWRzFOLMvhzpQZHQ==\",\"Exponent\":\"AQAB\",\"InverseQ\":\"QIOK2CZVgHSmJH9qinDrBk16+kR6FRXHU4/GftJSg7vJMKmtIBJCygrxobR2Yl3t3va0FaHktlaMmqovCIDiKg==\",\"Modulus\":\"qk0Y7mcaqmyAtVE3PPEB74tK/ARTwhZUwOAJi09V8nPXPT+9KZYwSpJxKRXWUpxoYxHq0T72wPvWov+ZFtWOsVQFR/PMYlPJLy+SrZJxFnmegI4oFt/IipdoLXIy27hbMbAZVXnmAHqWkALhb/tEsRcNXkII2h0QecmNvZFAGtE=\",\"P\":\"4gcv7f/mHy2mAmC2c988Ak5yoIqhSXoQWHuFzuRQk0UjRugP4wV+Qn1109vIt//JKE3AwBk5aV52lPFlAGBiTQ==\",\"Q\":\"wOIwSwbFcdqUnV6YoGb6gl2fg3keT0X+/6+SGX7Oyxd8ND//tb2P21ltisxoMNxn1HK7q5eefYxsgDpi1Qx0lQ==\"}",
+  "Hosts": [
     {
-      "addr": "127.0.0.1",
-      "port": 5004,
-      "lastSeenDT": null
+      "HostId": 0,
+      "Addr": "127.0.0.1",
+      "Port": 5004,
+      "LastSeenDT": null
     },
     {
-      "addr": "127.0.0.1",
-      "port": 5007,
-      "lastSeenDT": null
+      "HostId": 0,
+      "Addr": "127.0.0.1",
+      "Port": 5007,
+      "LastSeenDT": null
     }
   ]
 }

@@ -47,16 +47,20 @@ namespace Domain
 
         #endregion
 
+        [JsonIgnore]
         public string GetPayload => 
             CreatedAt.ToLongDateString() +
             Originator + Content;
 
+        [JsonIgnore]
         public string GetContentForBlockHashing =>
             ParentBlockId +
             CreatedAt.ToLongDateString() +
             Originator +
             Content +
             Signature;
+
+
     }
 
     public static class BlockExtensions
@@ -77,5 +81,12 @@ namespace Domain
 
             return Convert.ToBase64String(hashBytes);
         }
+        
+        public static string ToJson(this Block block)
+        {
+            var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
+            return JsonConvert.SerializeObject(block, settings);
+        }
+        
     }
 }

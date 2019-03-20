@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using DAL;
@@ -12,7 +13,7 @@ namespace Ledger.Requests
     public static class RequestCreateBlock
     {
         public static async Task<string> Response(AppDbContext dbContext, HttpContext context, string publicKey,
-            string privateKey)
+            string privateKey, object dbLock)
         {
             if (!context.Request.Query.ContainsKey("content") ||
                 string.IsNullOrWhiteSpace(context.Request.Query["content"]))
@@ -21,34 +22,39 @@ namespace Ledger.Requests
             
             
             var content = context.Request.Query["content"];
+            var childBlockJson = "";
 
-            // get the last block from db?
-            var parentBlock = await dbContext.Blocks.SingleAsync(b => b.ChildBlockId == null);
+            lock (dbLock)
+            {
 
-            var childBlock = new Block();
-            childBlock.ParentBlockId = parentBlock.BlockId;
+                // get the last block from db?
+                var parentBlock = dbContext.Blocks.Single(b => b.ChildBlockId == null);
 
-            // payload
-            childBlock.CreatedAt = DateTime.Now;
-            childBlock.Originator = publicKey;
-            childBlock.Content = content;
+                var childBlock = new Block();
+                childBlock.ParentBlockId = parentBlock.BlockId;
 
-            // payload signature
-            childBlock.Signature = childBlock.GetPayloadSignature(privateKey);
+                // payload
+                childBlock.CreatedAt = DateTime.Now;
+                childBlock.Originator = publicKey;
+                childBlock.Content = content;
 
-            childBlock.LocalCreatedAt = childBlock.CreatedAt;
-            childBlock.BlockId = childBlock.GetHash();
+                // payload signature
+                childBlock.Signature = childBlock.GetPayloadSignature(privateKey);
 
-            parentBlock.ChildBlockId = childBlock.BlockId;
+                childBlock.LocalCreatedAt = childBlock.CreatedAt;
+                childBlock.BlockId = childBlock.GetHash();
 
-            dbContext.Blocks.Add(childBlock);
+                parentBlock.ChildBlockId = childBlock.BlockId;
 
-            var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
-            var childBlockJson = JsonConvert.SerializeObject(childBlock, settings);
+                dbContext.Blocks.Add(childBlock);
 
-            await dbContext.SaveChangesAsync();
+                var settings = new JsonSerializerSettings {Formatting = Formatting.Indented};
+                childBlockJson = JsonConvert.SerializeObject(childBlock, settings);
+
+                dbContext.SaveChanges();
+            }
+
             return await Task.FromResult(childBlockJson);
-
 
         }
     }

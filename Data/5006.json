@@ -1,5 +1,5 @@
 {
-  "publicKey": "secret5006",
-  "privateKey": "",
-  "hosts": []
+  "PublicKey": "{\"Exponent\":\"AQAB\",\"Modulus\":\"ozjos/K75L23FwDdW+0IIxna/AFQ+6jLhuFYB/u8XrZ3d3Cltj65Aa1sJd+CEqEnBmP/S6yIR5kVwBgOvy55U4NMxfzKwpEESQJGwfAWcz3bzvytFQ/2gjBb034GctISxBu/xcmcPFHNspXRmicb7jTj1lQpVsnqIgfrblHlp8M=\"}",
+  "PrivateKey": "{\"D\":\"iEJ/CZKPRxMV4O9I3HARxfPUu2KB78VnO0+uBOQjylG7hAuXW4AbRIo5aZigZtr/0Db0roD3OAZVgQrUbMfoYfkeaCyN0sPPxC/tHN8pQ1B0aDChKElKF1MfPlBAYv0kVYMq9f+rNrEg6vl09YX3oF/Vamm4XH1SuzQU9uCwX5k=\",\"DP\":\"TihIBl313oLOGziMmyS/vyIccpXt1eJja3ZBmrCKBngyxJ9WOZJxUAyMURUTBBSFO/S2g9Sw4jIa2fVM9Xi0GQ==\",\"DQ\":\"te6ze/w769zqRytpII/ClJA2Qc50S0F6pd6StSJVDY+9qnbA2kJxrrFQXXqXBN5u5vyBxsIQM0Y8OipWTm9hWQ==\",\"Exponent\":\"AQAB\",\"InverseQ\":\"DIMsqksPDHWHPizudNatRVBKeQr/fUIjPv5EVwngUPVxjgD2ln3T90AzUgVz27gdq6B9s629XN8utNuA5n702w==\",\"Modulus\":\"ozjos/K75L23FwDdW+0IIxna/AFQ+6jLhuFYB/u8XrZ3d3Cltj65Aa1sJd+CEqEnBmP/S6yIR5kVwBgOvy55U4NMxfzKwpEESQJGwfAWcz3bzvytFQ/2gjBb034GctISxBu/xcmcPFHNspXRmicb7jTj1lQpVsnqIgfrblHlp8M=\",\"P\":\"0nGSWYFT5NRWTukR1bDwAwxy0XPou6M0sSKX4pK1OuFX77LfUhY+X/uWIBKN39pnFAEJIpLgTx/RAfqagzxjTw==\",\"Q\":\"xo5pPf41hy/ZjAztUaR1cQ+oW+YSeaAsXiJ/5GWBa05TwQbtzQKZqh6a6ppt3d3/FdDr4iywpu/XNlTfQQlnTQ==\"}",
+  "Hosts": []
 }
