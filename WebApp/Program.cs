@@ -14,6 +14,8 @@ namespace WebApp
     {
         public static int PortToListen = 5000;
         public static string InitialKnownHosts = "/Users/akaver/Magister/VR2/P2P/Data/5000.json";
+        public static string PublicKey = Guid.NewGuid().ToString();
+        public static string PrivateKey = Guid.NewGuid().ToString();
 
         public static void Main(string[] args)
         {

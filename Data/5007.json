@@ -1,5 +1,11 @@
-[  {
-  "addr": "127.0.0.1",
-  "port": 5008,
-  "lastSeenDT": null
-}]
+{
+  "publicKey": "secret5007",
+  "privateKey": "",
+  "hosts": [
+    {
+      "addr": "127.0.0.1",
+      "port": 5008,
+      "lastSeenDT": null
+    }
+  ]
+}

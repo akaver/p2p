@@ -37,6 +37,11 @@ namespace Ledger
                 response = await RequestAddr.Response(dbContext, context);
             }
 
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/ping", StringComparison.Ordinal))
+            {
+                response = await RequestPing.Response(dbContext, context);
+            }
+
 
             // this has to be final for logging to work correctly
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/log", StringComparison.Ordinal))

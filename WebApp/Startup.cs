@@ -60,7 +60,7 @@ namespace WebApp
                     var options = provider.GetRequiredService<IOptions<LedgerOptions>>().Value;
                     using (var dbContext = provider.GetRequiredService<AppDbContext>())
                     {
-                        LoadInitialHosts.LoadInitialHostsFromJsonFile(dbContext, log, Program.InitialKnownHosts, options);                  
+                        LoadInitialSettings.LoadInitialSettingsFromJsonFile(dbContext, log, Program.InitialKnownHosts, options);                  
                     }
                 }
             }

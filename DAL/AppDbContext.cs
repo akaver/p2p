@@ -9,6 +9,9 @@ namespace DAL
 
         public DbSet<Host> Hosts { get; set; }
         public DbSet<LogEntry> LogEntries { get; set; }
+
+        // THE LEDGER
+        public DbSet<Block> Blocks { get; set; }
         
         
 

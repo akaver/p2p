@@ -1,1 +1,5 @@
-[]
+{
+  "publicKey": "secret5001",
+  "privateKey": "",
+  "hosts": []
+}

@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace WebApp.Helpers
 {
-    public static class LoadInitialHosts
+    public static class LoadInitialSettings
     {
-        public async static void LoadInitialHostsFromJsonFile(AppDbContext ctx, Logger.IAppLogger log,
+        public static async void LoadInitialSettingsFromJsonFile(AppDbContext ctx, Logger.IAppLogger log,
             string jsonDataFile, LedgerOptions options)
         {
             // validate inputs
@@ -20,10 +20,9 @@ namespace WebApp.Helpers
             if (string.IsNullOrWhiteSpace(jsonDataFile)) throw new ArgumentNullException(nameof(jsonDataFile));
             if (!File.Exists(jsonDataFile)) throw new FileNotFoundException(nameof(jsonDataFile), jsonDataFile);
 
-            // import data in db
+            // import data into db, get public and private key
 
-
-            // add ourself as first in list
+            // add ourselves as first in list
             await ctx.Hosts.AddAsync(new Host()
             {
                 Addr = options.Addr,
@@ -35,8 +34,13 @@ namespace WebApp.Helpers
             using (var file = File.OpenText(jsonDataFile))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                var hosts = (List<Host>) serializer.Deserialize(file, typeof(List<Host>));
-                foreach (var host in hosts)
+                
+                var settings = (HostSettings) serializer.Deserialize(file, typeof(HostSettings));
+
+                Program.PublicKey = settings.PublicKey;
+                Program.PrivateKey = settings.PrivateKey;
+                
+                foreach (var host in settings.Hosts)
                 {
                     await ctx.Hosts.AddAsync(host);
                 }
@@ -45,9 +49,26 @@ namespace WebApp.Helpers
             await ctx.SaveChangesAsync();
 
             await log.InfoAsync(
+                "startup - Keys",
+                $"Public: {Program.PublicKey} Private: {Program.PrivateKey}"
+            );
+
+            await log.InfoAsync(
                 "startup - import hosts",
                 JsonConvert.SerializeObject(await ctx.Hosts.ToListAsync(), Formatting.None)
             );
+            
+            // generate GENESIS block and start to synchronize with others
+            
+            var genesisBlock = new Block();
+            genesisBlock.ParentBlockId = null;
+            genesisBlock.Content = "GENESIS";
+            genesisBlock.CreatedAt = DateTime.Now;
+            genesisBlock.LocalCreatedAt = genesisBlock.CreatedAt;
+            genesisBlock.Originator = Program.PublicKey;
+            genesisBlock.BlockId = genesisBlock.GetHash();
+
+
         }
     }
 }
