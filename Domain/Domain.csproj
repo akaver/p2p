@@ -10,5 +10,9 @@
       <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
       <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Crypto\Crypto.csproj" />
+    </ItemGroup>
 
 </Project>

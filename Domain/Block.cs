@@ -1,9 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
+using Crypto;
 using Newtonsoft.Json;
 
 namespace Domain
@@ -42,23 +41,14 @@ namespace Domain
     {
         public static string GetPayloadSignature(this Block block, string signatureKey)
         {
-            var keyBytes = Encoding.UTF8.GetBytes(signatureKey);
-
             var inputString =
                 block.CreatedAt.ToLongDateString() +
                 block.Originator +
                 block.Content;
-            var inputBytes = System.Text.Encoding.UTF8.GetBytes(inputString);
-
-            var resultSignature = "";
-           
-            using (HMACSHA256 hmac = new HMACSHA256(keyBytes))
-            {
-                byte[] signatureBytes = hmac.ComputeHash(inputBytes);
-                resultSignature = Convert.ToBase64String(signatureBytes);
-            }
-
-            return resultSignature;
+            
+            var inputBytes = Encoding.UTF8.GetBytes(inputString);
+            
+            return SignatureProvider.GetSignature(inputBytes, signatureKey);
         }
 
         
@@ -71,7 +61,7 @@ namespace Domain
                               block.Content+
                               block.Signature;
 
-            var bytesToHash = System.Text.Encoding.UTF8.GetBytes(inputString);
+            var bytesToHash = Encoding.UTF8.GetBytes(inputString);
             var hasher = SHA256.Create();
             var hashBytes = hasher.ComputeHash(bytesToHash);
 
