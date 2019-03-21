@@ -18,6 +18,10 @@ Also saved as pdf (spec02.pdf) in solution root folder for historical purposes.
 Project is/was developed using JetBrains Rider. Dev environment is based on macOS Mojave.  
 
 
+### API Endpoints
+
+All the endpoints are based on GET unlesss marked with POST (for example /ledger/receiveblock)  
+
 Misc endpoints  
 /ledger/log  
 Get the log entries from this host  
@@ -60,4 +64,18 @@ POST
 ~~~
 Actual block content as json in post body  
 
+### Launching network
 
+Start as many hosts as you like. Command line  
+~~~
+>dotnet run WebApp.dll <portno> <settings.json>
+~~~
+portno - port to open for listening
+settings - json file, containing keys and initially known hosts.
+
+There is script file in /Run folder - run.sh. Launches 10 hosts in osx iterm - every one in separate tab.
+
+### Monitoring tool
+
+Monitoring tool is written as separate web application, MonitorWeb.  
+Allows to monitor p2p/ledger network activity and insert new blocks into ledger.   
