@@ -68,7 +68,7 @@ namespace Ledger
 
                     
                     // ======================== send out our new records ============================
-                    foreach (var blockToSend in dbContext.Blocks.Where(b => b.LocalCreatedAt >= LastRunTime))
+                    foreach (var blockToSend in dbContext.Blocks.Where(b => b.LocalCreatedAt >= (LastRunTime.Subtract(TimeBetweenExecutions).Subtract(TimeBetweenExecutions))))
                     {
                         foreach (var host in dbContext.Hosts.Where(h => (h.Addr + h.Port) != (options.Addr + options.Port)))
                         {
