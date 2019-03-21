@@ -24,28 +24,40 @@ Get the log entries from this host
 
 
 Endpoints for p2p discovery  
-/ledger/addr/?addr=<clientip>&port=<clientport>  
+~~~
+/ledger/addr/?addr=<client ip>&port=<client port>  
+~~~
 parameters: addr=127.0.0.1&port=5001 - incoming host also includes its own public ip/port  
 response: list of hosts known currently - new hosts get added to db  
  
+~~~
 /ledger/ping  
+~~~
 Used during /ledger/addr request to check, that incoming host public info is correct  
 response: json object with hosts public key.  
 
 
 Endpoints for distributed ledger  
+~~~
 /ledger/blocks?from=<hash>&to=<hash>  
+~~~
 get known blocks in chain from host. from - null for genesis block, to - null for till the end  
 
-/ledger/createblock?content=<somecontent>  
+~~~
+/ledger/createblock?content=<some content>  
+~~~
 insert new block at the end of the chain - to be synced into ledger  
   
-/ledger/singleblock?hash=<blockhash>  
-/ledger/singleblock?hash=<contenthash>  
+~~~
+/ledger/singleblock?hash=<block hash>  
+/ledger/singleblock?payloadhash=<payload hash>  
+~~~
 Get block either by content or block hash  
 
 POST  
-/ledger/receiveblock/?addr=<clientip>&port=<clientport>&hash=<block_content_hash>  
+~~~
+/ledger/receiveblock/?addr=<client ip>&port=<client port>&hash=<block content hash>  
+~~~
 Actual block content as json in post body  
 
 
