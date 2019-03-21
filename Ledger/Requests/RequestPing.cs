@@ -10,9 +10,11 @@ namespace Ledger.Requests
 {
     public static class RequestPing
     {
-        public static async Task<string> Response(AppDbContext dbContext, HttpContext context)
+        public static async Task<string> Response(AppDbContext dbContext, HttpContext context, string publicKey)
         {
-            return await Task.FromResult("OK");
+            var res = "{\"publicKey\":" + publicKey + "}";
+            return await Task.FromResult(publicKey);
+            
         }
 
     }

@@ -53,7 +53,7 @@ namespace Ledger
             // p2p responses - ping
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/ping", StringComparison.Ordinal))
             {
-                response = await RequestPing.Response(dbContext, context);
+                response = await RequestPing.Response(dbContext, context, _publicKey);
             }
 
             
