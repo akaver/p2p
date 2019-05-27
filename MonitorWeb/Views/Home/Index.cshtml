@@ -1,8 +1,51 @@
-﻿@{
+﻿@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <h1 class="display-4">Ledger keepers</h1>
 </div>
+
+<div class="container">
+    <ul class="nav nav-tabs">
+        @foreach (var endpointData in Model.Endpoints.Select((s, i) => new {Value = s, Index = i}))
+        {
+            var url = $"#host{endpointData.Value.PortNumber}";
+            
+            <li class="nav-item">
+                <a class="nav-link @(endpointData.Index == 0 ? "active" : string.Empty)" 
+                   data-toggle="tab" href="@url">@endpointData.Value.PortNumber</a>
+            </li>
+        }
+    </ul>
+
+    <div class="tab-content">
+        @foreach (var endpointData in Model.Endpoints.Select((s, i) => new {Value = s, Index = i}))
+        {
+            var url = $"host{endpointData.Value.PortNumber}";
+            
+            <div class="tab-pane ledger-pane container @(endpointData.Index == 0 ? "active" : string.Empty)" 
+                 data-url="@endpointData.Value.Url"
+                 id="@url">@endpointData.Value.PortNumber content</div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var poll = setInterval(function(){ queryData(); }, 3000);
+    
+        function queryData(){
+            $('.ledger-pane').each(function(){
+                var url = $(this).data('url') + 'ledger/addr/';
+                
+                $.get(url, function(data){
+                    $(this).html(data);
+                });                
+            });
+        }
+    </script>
+}
