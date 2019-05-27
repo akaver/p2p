@@ -43,9 +43,9 @@ response: json object with hosts public key.
 
 #### Endpoints for distributed ledger  
 ~~~
-/ledger/ledgerhash 
+/ledger/info 
 ~~~
-get ledger hash
+get ledger hash and block count
 
 ~~~
 /ledger/blocks?from=<hash>&to=<hash>  

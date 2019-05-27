@@ -149,17 +149,131 @@ namespace Ledger
         }
 
         private async Task SynchronizeLedger(AppDbContext dbContext, CancellationToken cancellationToken){
+            var localLedgerLength = await dbContext.Blocks.CountAsync();
+            var localLastBlock = await dbContext.Blocks.SingleOrDefaultAsync(b => b.ChildBlockId == null);
+            var localLastBlockHash = "";
+            if (localLastBlock == null) {
+                Console.WriteLine("Local ledger is empty!");
+            }
+            else
+            {
+                localLastBlockHash = localLastBlock.BlockId;
+            }
+
+            
             // choose host for syncing - first one where our ledgers dont match
             foreach (var host in await dbContext.Hosts.Where(h => h.LastSeenDT != null).ToListAsync())
             {
                 Console.WriteLine($"Synchronizing ledger with host {host.Addr}:{host.Port}");
                 // ask for merkle root (or its analog)
-                var url = $"http://{host.Addr}:{host.Port}/ledger/merkle";
+                var url = $"http://{host.Addr}:{host.Port}/ledger/info";
+                var result = await HttpClient.GetAsync(url, cancellationToken);
+                if (result.IsSuccessStatusCode)
+                {
+                    var response = await result.Content.ReadAsStringAsync();
+                    var remoteLedgerInfo = JsonConvert.DeserializeObject<LedgerInfo>(response);
+                    Console.WriteLine("Response " + response);
+                    if (localLastBlockHash != remoteLedgerInfo.Hash)
+                    {
+                        Console.WriteLine("Local and remote ledgers don't match. Syncing....");
+                        // get complete remote ledger
+                        url = $"http://{host.Addr}:{host.Port}/ledger/blocks";
+                        var resultLedger = await HttpClient.GetAsync(url, cancellationToken);
+                        if (resultLedger.IsSuccessStatusCode)
+                        {
+                            var  resultLedgerContent = await resultLedger.Content.ReadAsStringAsync();
+                            // deserialize
+                            var remoteLedgerBlocks = JsonConvert.DeserializeObject<List<LedgerBlock>>(resultLedgerContent);
+                            // iterate over items, add new ones into our ledger
+                            foreach (var ledgerBlock in remoteLedgerBlocks)
+                            {
+                                Console.Write("Block Id: " + ledgerBlock.BlockId + " - ");
+                                // check, if we already have this block or no
+                                var weHaveThisBlock =
+                                    await dbContext.Blocks.AnyAsync(b => b.Signature == ledgerBlock.Signature, cancellationToken);
+                                if (!weHaveThisBlock)
+                                {
+                                    // new block for us, insert it at end!
+                                    Console.WriteLine("new block!");
+                                        
+                                    var lastBlock = await dbContext.Blocks.SingleAsync(b => b.ChildBlockId == null, cancellationToken);
+                                    
+                                    
+                                    var block = new Block();
+                                    block.ParentBlockId = localLastBlock?.BlockId;
+                                    block.ChildBlockId = null;
+
+                                    // payload
+                                    block.CreatedAt = ledgerBlock.CreatedAt;
+                                    block.Originator = ledgerBlock.Originator;
+                                    // this should be separate request, can be huge in theory - rest is just metadata
+                                    block.Content = ledgerBlock.Content;
+
+                                    // payload signature
+                                    block.Signature = ledgerBlock.Signature;
+
+                                    block.LocalCreatedAt = DateTime.Now;
+                                    block.BlockId = block.GetHash();
+
+                                    lastBlock.ChildBlockId = block.BlockId;
+
+                                    await dbContext.Blocks.AddAsync(block);
+                                    await dbContext.SaveChangesAsync();                                    
+                                    Console.WriteLine("Inserted!");
+                                    
+                                }
+                                else
+                                {
+                                    Console.WriteLine("already have it!");
+                                }
+
+                            }
+                            // push our new complete ledger back - we now have our original ledger and new blocks from other host
+                            url = $"http://{host.Addr}:{host.Port}/ledger/receiveledger";
+                            var blocksToSend = await dbContext.Blocks.ToListAsync(cancellationToken: cancellationToken);
+                            var contentToSend = "[";
+                            foreach (var block in blocksToSend)
+                            {
+                                contentToSend = contentToSend + block.ToJson() + ",";
+                            }
+
+                            contentToSend = contentToSend + "]";
+                            var postResult = await HttpClient.PostAsync(url, new StringContent(contentToSend), cancellationToken);
+                            if (postResult.IsSuccessStatusCode)
+                            {
+                                Console.WriteLine("Sent ledger over!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Failure in sync! " + postResult.ReasonPhrase);
+                            }
+
+                        }
+                        break; // sync only single host in every run
+                    }
+                }
                 
-            }
+            } // foreach
+            
         }
         
+        class LedgerInfo
+        {
+            public string Hash { get; set; }
+            public string BlockCount { get; set; }
+        }
 
+        class LedgerBlock
+        {
+            public string BlockId { get; set; }
+            public DateTime LocalCreatedAt { get; set; }
+            public string ParentBlockId { get; set; }
+            public DateTime CreatedAt { get; set; }
+            public string Originator { get; set; }
+            public string Content { get; set; }
+            public string Signature { get; set; }
+        }
     }
-    
+
+
 }

@@ -64,9 +64,9 @@ namespace Ledger
             }
 
             // ledger - merkle root of current ledger
-            if (context.Request.Path.StartsWithSegments(_endpointPath + "/ledgerhash", StringComparison.Ordinal))
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/info", StringComparison.Ordinal))
             {
-                response = await RequestLedgerHash.Response(dbContext, context);
+                response = await RequestInfo.Response(dbContext, context);
             }
 
             
@@ -86,6 +86,12 @@ namespace Ledger
             }
 
             
+            
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/receiveledger", StringComparison.Ordinal) && context.Request.Method == "POST")  
+            {
+                response = await RequestReceiveLedger.Response(dbContext, context, _publicKey, _privateKey, dbLock);
+            }
+
             // ledger - get one specific block
             
             
@@ -99,7 +105,8 @@ namespace Ledger
                 await appLogger.DebugAsync($"response - {context.Request.Path}", response);
             }
           
-            
+          
+            //allow ajax requests from browsers
             context.Response.Headers.Add("Access-Control-Allow-Origin","*");
             context.Response.Headers.Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
             
