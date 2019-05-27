@@ -41,7 +41,12 @@ Used during /ledger/addr request to check, that incoming host public info is cor
 response: json object with hosts public key.  
 
 
-Endpoints for distributed ledger  
+#### Endpoints for distributed ledger  
+~~~
+/ledger/ledgerhash 
+~~~
+get ledger hash
+
 ~~~
 /ledger/blocks?from=<hash>&to=<hash>  
 ~~~

@@ -67,7 +67,9 @@ namespace Ledger
                     }
 
                     
+                    // this is doubtful!!!
                     // ======================== send out our new records ============================
+                    /*
                     foreach (var blockToSend in dbContext.Blocks.Where(b => b.LocalCreatedAt >= (LastRunTime.Subtract(TimeBetweenExecutions).Subtract(TimeBetweenExecutions))))
                     {
                         foreach (var host in dbContext.Hosts.Where(h => (h.Addr + h.Port) != (options.Addr + options.Port)))
@@ -77,7 +79,7 @@ namespace Ledger
                             tasks.Add(HttpClient.PostAsync(url, new StringContent(blockToSend.ToJson()), cancellationToken));   
                         }                           
                     }
-                    
+                    */
                     
                     
                     // wait for all tasks to complete
@@ -130,6 +132,12 @@ namespace Ledger
                     }
                     
                     Console.WriteLine("Active hosts: " + await dbContext.Hosts.Where(h => h.LastSeenDT != null).CountAsync(cancellationToken: cancellationToken));
+                    
+                    
+                    // synchronize current blockchain with some other host
+                    await SynchronizeLedger(dbContext, cancellationToken);
+
+                    //using dbContext END
                 }
             }
 
@@ -139,5 +147,19 @@ namespace Ledger
 
 
         }
+
+        private async Task SynchronizeLedger(AppDbContext dbContext, CancellationToken cancellationToken){
+            // choose host for syncing - first one where our ledgers dont match
+            foreach (var host in await dbContext.Hosts.Where(h => h.LastSeenDT != null).ToListAsync())
+            {
+                Console.WriteLine($"Synchronizing ledger with host {host.Addr}:{host.Port}");
+                // ask for merkle root (or its analog)
+                var url = $"http://{host.Addr}:{host.Port}/ledger/merkle";
+                
+            }
+        }
+        
+
     }
+    
 }
