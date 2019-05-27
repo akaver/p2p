@@ -63,7 +63,7 @@ namespace WebApp.Helpers
             // payload
             genesisBlock.CreatedAt = DateTime.Now;
             genesisBlock.Originator = options.PublicKey;
-            genesisBlock.Content = "GENESIS BLOCK";
+            genesisBlock.Content = "GENESIS BLOCK " + options.Port;
 
             // payload signature
             genesisBlock.Signature = genesisBlock.GetPayloadSignature(Program.PrivateKey);

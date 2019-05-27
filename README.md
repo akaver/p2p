@@ -11,7 +11,7 @@ http://lambda.ee/wiki/Vorgurakendused_2_prax_1_2019_kevad (in estonian).
 Also saved as pdf (spec01.pdf) in solution root folder for historical purposes.
 
 Second stage spec is here: 
-http://lambda.ee/wiki/Vorgurakendused_2_prax_1_2019_kevad  
+http://lambda.ee/wiki/Vorgurakendused_2_prax_2_2019_kevad  
 Also saved as pdf (spec02.pdf) in solution root folder for historical purposes.  
 
 
