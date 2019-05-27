@@ -16,6 +16,7 @@
             {
                 var hostsUrl = $"#host{endpointData.Value.PortNumber}-hosts";
                 var blocksUrl = $"#host{endpointData.Value.PortNumber}-blocks";
+                var createUrl = $"#host{endpointData.Value.PortNumber}-create";
 
                 <li class="nav-item dropdown @(endpointData.Index == 0 ? "active" : string.Empty)">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,6 +25,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item nav-item" href="@hostsUrl">Known hosts</a>
                         <a class="dropdown-item nav-item" href="@blocksUrl">Blocks</a>
+                        <a class="dropdown-item nav-item" href="@createUrl">Create new block</a>
                     </div>
                 </li>
             }
@@ -35,6 +37,7 @@
         {
             var hostsUrl = $"host{endpointData.Value.PortNumber}-hosts";
             var blocksUrl = $"host{endpointData.Value.PortNumber}-blocks";
+            var createUrl = $"host{endpointData.Value.PortNumber}-create";
 
             <div class="tab-pane ledger-pane hosts container @(endpointData.Index == 0 ? "active" : string.Empty)"
                  data-url="@endpointData.Value.Url"
@@ -54,6 +57,25 @@
                 <pre>
                 </pre>
             </div>
+            
+            <div class="tab-pane ledger-pane create container"
+                 data-url="@endpointData.Value.Url"
+                 id="@createUrl"
+                 style="padding-top: 20px">
+                
+                <form class="create-form" data-url="@endpointData.Value.Url">
+                    <div class="form-group">
+                        <label for="blockContent">
+                            @endpointData.Value.PortNumber - tell endpoint to create new block:
+                        </label>
+                        <input name="blockContent" type="text" class="form-control" placeholder="Write something nice"/>
+                    </div>
+                    <button type="submit" class="btn btn-dark">Create block</button>
+                </form>
+                
+                <div class="response-div" style="display:none">Response:</div>
+                <pre></pre>
+            </div>
         }
     </div>
 </div>
@@ -61,6 +83,29 @@
 @section Scripts
 {
     <script>
+        $('.create-form').submit(function(e){
+            e.preventDefault();
+            var element = $(this);
+            
+            var content = $(this).find('input').val();
+            if (content.trim() === '') {
+                alert('Empty string is not content');
+                return false;
+            }
+            
+            var url = $(this).data('url') + 'ledger/createblock?content=' + content;
+            $.get(url).done(function(data){
+                var jsonObj = JSON.parse(data);
+                var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+                $(element).parent().find('pre').text(jsonPretty);
+                $(element).parent().find('.response-div').show();
+            }).
+            fail(function(err){
+                $(element).parent().find('pre').text(err);
+                $(element).parent().find('.response-div').show();
+            });
+        });
+    
         $('.dropdown-item').click(function(e){
            e.preventDefault();
            $('.nav-item').removeClass('active');
