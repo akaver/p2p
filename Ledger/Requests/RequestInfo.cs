@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Ledger.Requests
 {
-    public class RequestLedgerHash
+    public class RequestInfo
     {
         public static async Task<string> Response(AppDbContext dbContext, HttpContext context)
         {
