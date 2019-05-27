@@ -4,31 +4,56 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <h1 class="display-4">Ledger keepers</h1>
+<div style="padding-left: 16px">
+    <h2 class="display-5">Ledger keepers</h2>
 </div>
 
 <div class="container">
-    <ul class="nav nav-tabs">
-        @foreach (var endpointData in Model.Endpoints.Select((s, i) => new {Value = s, Index = i}))
-        {
-            var url = $"#host{endpointData.Value.PortNumber}";
-            
-            <li class="nav-item">
-                <a class="nav-link @(endpointData.Index == 0 ? "active" : string.Empty)" 
-                   data-toggle="tab" href="@url">@endpointData.Value.PortNumber</a>
-            </li>
-        }
-    </ul>
+    
+    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #e3f2fd">
+        <ul class="navbar-nav">
+            @foreach (var endpointData in Model.Endpoints.Select((s, i) => new {Value = s, Index = i}))
+            {
+                var hostsUrl = $"#host{endpointData.Value.PortNumber}-hosts";
+                var blocksUrl = $"#host{endpointData.Value.PortNumber}-blocks";
+
+                <li class="nav-item dropdown @(endpointData.Index == 0 ? "active" : string.Empty)">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        #@endpointData.Value.PortNumber
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item nav-item" href="@hostsUrl">Known hosts</a>
+                        <a class="dropdown-item nav-item" href="@blocksUrl">Blocks</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </nav>
 
     <div class="tab-content">
         @foreach (var endpointData in Model.Endpoints.Select((s, i) => new {Value = s, Index = i}))
         {
-            var url = $"host{endpointData.Value.PortNumber}";
-            
-            <div class="tab-pane ledger-pane container @(endpointData.Index == 0 ? "active" : string.Empty)" 
+            var hostsUrl = $"host{endpointData.Value.PortNumber}-hosts";
+            var blocksUrl = $"host{endpointData.Value.PortNumber}-blocks";
+
+            <div class="tab-pane ledger-pane hosts container @(endpointData.Index == 0 ? "active" : string.Empty)"
                  data-url="@endpointData.Value.Url"
-                 id="@url">@endpointData.Value.PortNumber content</div>
+                 id="@hostsUrl"
+                 style="padding-top: 20px">
+                @endpointData.Value.PortNumber known hosts:
+                <pre>
+                </pre>
+            </div>
+            
+            <div class="tab-pane ledger-pane blocks container"
+                 data-url="@endpointData.Value.Url"
+                 id="@blocksUrl"
+                 style="padding-top: 20px">
+
+                @endpointData.Value.PortNumber blocks:
+                <pre>
+                </pre>
+            </div>
         }
     </div>
 </div>
@@ -36,14 +61,38 @@
 @section Scripts
 {
     <script>
-        var poll = setInterval(function(){ queryData(); }, 3000);
+        $('.dropdown-item').click(function(e){
+           e.preventDefault();
+           $('.nav-item').removeClass('active');
+           $('.ledger-pane').removeClass('active');
+           $(this).parent().parent().addClass('active');
+           
+           var href = $(this).attr('href');
+           $(href).addClass('active');
+        });
+    
+        var poll = setInterval(function(){ queryData(); }, 15000);
     
         function queryData(){
-            $('.ledger-pane').each(function(){
-                var url = $(this).data('url') + 'ledger/addr/';
+            $('.ledger-pane.hosts').each(function(){
+                var element = $(this);
+                var url = $(element).data('url') + 'ledger/addr/';
                 
                 $.get(url, function(data){
-                    $(this).html(data);
+                    var jsonObj = JSON.parse(data);
+                    var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+                    $(element).find('pre').text(jsonPretty);
+                });                
+            });
+            
+            $('.ledger-pane.blocks').each(function(){
+                var element = $(this);
+                var url = $(element).data('url') + 'ledger/blocks/';
+                
+                $.get(url, function(data){
+                    var jsonObj = JSON.parse(data);
+                    var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+                    $(element).find('pre').text(jsonPretty);
                 });                
             });
         }

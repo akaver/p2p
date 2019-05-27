@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using MonitorWeb.Models;
-using System.IO;
-using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
 
 namespace MonitorWeb.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IHttpClientFactory _clientFactory;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, IHttpClientFactory clientFactory)
+        public HomeController(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
-            _clientFactory = clientFactory;
         }
 
         public IActionResult Index()
@@ -66,18 +58,6 @@ namespace MonitorWeb.Controllers
 
             return res;
         }
-
-/*        private IActionResult PollEndpoint(string url)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var client = _clientFactory.CreateClient();
-            var response = client.SendAsync(request);
-
-            if (response.IsCompletedSuccessfully)
-            {
-                
-            }
-        }*/
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
