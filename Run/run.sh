@@ -1,4 +1,7 @@
 #!/bin/sh
+cd ../WebApp
+dotnet build -c Release
+cd Run
 
 osascript <<EOF
 tell application "iTerm"
