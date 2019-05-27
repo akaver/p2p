@@ -93,7 +93,9 @@
                 return false;
             }
             
-            var url = $(this).data('url') + 'ledger/createblock?content=' + content;
+            var contentNice = encodeURIComponent(content);
+            
+            var url = $(this).data('url') + 'ledger/createblock?content=' + contentNice;
             $.get(url).done(function(data){
                 var jsonObj = JSON.parse(data);
                 var jsonPretty = JSON.stringify(jsonObj, null, '\t');
