@@ -54,6 +54,7 @@ namespace Ledger.Requests
 
             var receivedBlock = JsonConvert.DeserializeObject<Block>(bodyStr);
             
+            // verify it one more time
             if (await dbContext.Blocks.AnyAsync(b => b.Signature == receivedBlock.Signature))
             {
                 Console.WriteLine("ALREADY HAVE");

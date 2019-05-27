@@ -63,6 +63,13 @@ namespace Ledger
                 response = await RequestBlocks.Response(dbContext, context);
             }
 
+            // ledger - merkle root of current ledger
+            if (context.Request.Path.StartsWithSegments(_endpointPath + "/ledgerhash", StringComparison.Ordinal))
+            {
+                response = await RequestLedgerHash.Response(dbContext, context);
+            }
+
+            
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/singleblock", StringComparison.Ordinal))
             {
                 response = await RequestSingleBlock.Response(dbContext, context);
@@ -92,6 +99,9 @@ namespace Ledger
                 await appLogger.DebugAsync($"response - {context.Request.Path}", response);
             }
           
+            
+            context.Response.Headers.Add("Access-Control-Allow-Origin","*");
+            context.Response.Headers.Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
             
             if (!string.IsNullOrWhiteSpace(response))
             {
