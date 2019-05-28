@@ -16,7 +16,7 @@ using Scheduler;
 
 namespace Ledger
 {
-    public class ScheduledTask : IScheduledTask
+    public partial class ScheduledTask : IScheduledTask
     {
         private readonly IServiceProvider _serviceProvider;
         public TimeSpan TimeBetweenExecutions => TimeSpan.FromMinutes(1);
@@ -237,6 +237,8 @@ namespace Ledger
                                 contentToSend = contentToSend + block.ToJson() + ",";
                             }
 
+                            contentToSend = contentToSend.TrimEnd(',');
+                            
                             contentToSend = contentToSend + "]";
                             var postResult = await HttpClient.PostAsync(url, new StringContent(contentToSend), cancellationToken);
                             if (postResult.IsSuccessStatusCode)
@@ -255,23 +257,6 @@ namespace Ledger
                 
             } // foreach
             
-        }
-        
-        class LedgerInfo
-        {
-            public string Hash { get; set; }
-            public string BlockCount { get; set; }
-        }
-
-        class LedgerBlock
-        {
-            public string BlockId { get; set; }
-            public DateTime LocalCreatedAt { get; set; }
-            public string ParentBlockId { get; set; }
-            public DateTime CreatedAt { get; set; }
-            public string Originator { get; set; }
-            public string Content { get; set; }
-            public string Signature { get; set; }
         }
     }
 

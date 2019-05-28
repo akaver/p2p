@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,31 @@ namespace Ledger.Requests
 
             // new block, add it at end
             Console.WriteLine("Got json from body:" + bodyStr);
+            
+            //deserialize it
+            var blocks = JsonConvert.DeserializeObject<List<Block>>(bodyStr);
+            
+            // kill our database, insert replacement
+            lock (dbLock)
+            {
+                dbContext.Blocks.RemoveRange(dbContext.Blocks);
+                dbContext.SaveChanges();
+
+
+                Block lastBlock = null;
+                
+                foreach (var block in blocks)
+                {
+                    if (lastBlock != null)
+                    {
+                        lastBlock.ChildBlockId = block.BlockId;
+                    }
+
+                    dbContext.Blocks.Add(block);
+                    lastBlock = block;
+                }
+                dbContext.SaveChanges();
+            }
 
             return await Task.FromResult("{\"OK\": \"DONE\"}");
         }
