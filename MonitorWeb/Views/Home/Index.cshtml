@@ -118,7 +118,8 @@
            $(href).addClass('active');
         });
     
-        var poll = setInterval(function(){ queryData(); }, 15000);
+        queryData();
+        var poll = setInterval(function(){ queryData(); }, 10000);
     
         function queryData(){
             $('.ledger-pane.hosts').each(function(){
