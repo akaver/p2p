@@ -64,6 +64,7 @@ namespace Ledger.Requests
                 dbContext.SaveChanges();
             }
 
+            Console.WriteLine($"SYNCED ledger with: {context.Request.Host}");
             return await Task.FromResult("{\"OK\": \"DONE\"}");
         }
     }

@@ -200,7 +200,7 @@ namespace Ledger
                                     
                                     
                                     var block = new Block();
-                                    block.ParentBlockId = localLastBlock?.BlockId;
+                                    block.ParentBlockId = lastBlock?.BlockId;
                                     block.ChildBlockId = null;
 
                                     // payload

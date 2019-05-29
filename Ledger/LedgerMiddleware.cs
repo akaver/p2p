@@ -17,7 +17,9 @@ namespace Ledger
         private readonly string _publicKey;
         private readonly string _privateKey;
         
-        private readonly object dbLock = new object();
+        private readonly object _dbLock = new object();
+        private readonly object _requestLock = new object();
+        
         
 
         public LedgerMiddleware(RequestDelegate next, string path, string publicKey, string privateKey)
@@ -77,19 +79,19 @@ namespace Ledger
 
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/createblock", StringComparison.Ordinal) ) //  && context.Request.Method == "POST"
             {
-                response = await RequestCreateBlock.Response(dbContext, context, _publicKey, _privateKey, dbLock);
+                response = await RequestCreateBlock.Response(dbContext, context, _publicKey, _privateKey, _dbLock);
             }
 
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/receiveblock", StringComparison.Ordinal) && context.Request.Method == "POST")  
             {
-                response = await RequestReceiveBlock.Response(dbContext, context, _publicKey, _privateKey, dbLock);
+                response = await RequestReceiveBlock.Response(dbContext, context, _publicKey, _privateKey, _dbLock);
             }
 
             
             
             if (context.Request.Path.StartsWithSegments(_endpointPath + "/receiveledger", StringComparison.Ordinal) && context.Request.Method == "POST")  
             {
-                response = await RequestReceiveLedger.Response(dbContext, context, _publicKey, _privateKey, dbLock);
+                response = await RequestReceiveLedger.Response(dbContext, context, _publicKey, _privateKey, _dbLock);
             }
 
             // ledger - get one specific block

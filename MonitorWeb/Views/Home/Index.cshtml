@@ -96,6 +96,7 @@
             var contentNice = encodeURIComponent(content);
             
             var url = $(this).data('url') + 'ledger/createblock?content=' + contentNice;
+            console.log('create block',url);
             $.get(url).done(function(data){
                 var jsonObj = JSON.parse(data);
                 var jsonPretty = JSON.stringify(jsonObj, null, '\t');
