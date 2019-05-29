@@ -63,6 +63,13 @@ insert new block at the end of the chain - to be synced into ledger
 ~~~
 Get block either by content or block hash  
 
+POST
+~~~
+/ledger/receiveledger
+~~~
+Send full ledger over to another host (part of compare and swap)
+Actual ledger as json in post body
+
 POST  
 ~~~
 /ledger/receiveblock/?addr=<client ip>&port=<client port>&hash=<block content hash>  
